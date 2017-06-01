@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">My Music</string>
+    <string name="open_drawer">My Music</string>
+    <string name="close_drawer">My Music</string>
+    <string name="song_recomment">推荐</string>
+    <string name="song_oumei">欧美歌曲</string>
+    <string name="song_jinqu">金曲</string>
+    <string name="song_jingdian">经典老歌</string>
+    <string name="song_bendi">本地歌曲</string>
+    <string name="song_gedan">我的歌单</string>
+
+    <string name="down">下载</string>
+    <string name="love">喜欢</string>
+    <string name="cancel">取消喜欢</string>
+    <string name="local">本地</string>
+
+    <string name="nolry">欢迎使用小熊播放器</string>
+
+    <string name="minTime">00:00</string>
+    <string name="unknown">未知</string>
+</resources>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/recom"
+        android:title="@string/song_recomment"/>
+    <item
+        android:id="@+id/oumei"
+        android:title="@string/song_oumei"/>
+    <item
+        android:id="@+id/jingdian"
+        android:title="@string/song_jingdian"/>
+    <item
+        android:id="@+id/gedan"
+        android:title="@string/song_gedan"/>
+    <item
+        android:id="@+id/bendi"
+        android:title="@string/song_bendi"/>
+
+</menu>

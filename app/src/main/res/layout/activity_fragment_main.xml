@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_fragment_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.wang.mymusic.activity.FragmentMainActivity">
+    <RadioGroup
+        android:id="@+id/group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:background="@color/colorPrimaryDark">
+        <RadioButton
+            android:id="@+id/love"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/tab_menu_item"
+            android:drawableTop="@drawable/tab_love"
+            android:text="@string/love"
+            android:layout_marginEnd="10dp"
+            android:checked="true" />
+        <RadioButton
+            android:id="@+id/local"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/tab_local"
+            android:text="@string/local"
+            style="@style/tab_menu_item" />
+    </RadioGroup>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/group"/>
+
+</RelativeLayout>

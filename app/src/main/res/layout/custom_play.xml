@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/playitem"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="horizontal">
+
+    <ImageButton
+        android:id="@+id/last"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/last"
+        android:background="@android:color/transparent"
+        style="?android:attr/buttonStyleSmall"/>
+    <ImageButton
+        android:id="@+id/play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/pause"
+        android:background="@android:color/transparent"
+        style="?android:attr/buttonStyleSmall" />
+    <ImageButton
+        android:id="@+id/next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        style="?android:attr/buttonStyleSmall"
+        android:src="@drawable/next" />
+    <ImageButton
+        android:id="@+id/moder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/round"
+        android:background="@android:color/transparent"
+        style="?android:attr/buttonStyleSmall"/>
+
+</LinearLayout>
