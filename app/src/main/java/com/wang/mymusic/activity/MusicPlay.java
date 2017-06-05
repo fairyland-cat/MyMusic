@@ -1,5 +1,7 @@
 package com.wang.mymusic.activity;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -12,9 +14,12 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.util.SparseArray;
+import android.widget.RemoteViews;
 
+import com.wang.mymusic.R;
 import com.wang.mymusic.data.MusicData;
 import com.wang.mymusic.data.SqlUtil;
 import com.wang.mymusic.model.RecommentBean;
@@ -53,6 +58,9 @@ public class MusicPlay extends Service {
     SparseArray<List<RecommentBean.SongListBean>> songlist=new SparseArray<>();
     private List<SongData> savelist;
     private List<SongLocalBean> localist;
+    private RemoteViews mRemoteViews;
+    private final int NOTIFICATION_ID=0X1;
+    private NotificationCompat.Builder mBuilder;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -73,6 +81,8 @@ public class MusicPlay extends Service {
             }
         });
         songConfig=this.getSharedPreferences("songConfig",MODE_PRIVATE);
+        currentPosition=songConfig.getInt("position",0);
+        mType=songConfig.getInt("type",2);
         mdata=MusicData.getMusicData();
         mdata.getListPlay(2,"",0);
         mdata.getListPlay(22,"",0);
@@ -81,8 +91,6 @@ public class MusicPlay extends Service {
             @Override
             public void setPlayData(RecommentBean songList,int type) {
                 songlist.put(type,songList.getSong_list());
-                currentPosition=songConfig.getInt("position",0);
-                mType=songConfig.getInt("type",2);
                 getSongDate();
             }
 
@@ -115,6 +123,7 @@ public class MusicPlay extends Service {
                 }else {
                     mSong=song.getSonginfo();
                     String songUri=song.getBitrate().getFile_link();
+                    initNotification(mSong.getTitle(),mSong.getAuthor());
                     if (songUri.length()!=0){
                     setSongPlay(songUri);
                 }else {NextPlay();}
@@ -127,10 +136,24 @@ public class MusicPlay extends Service {
         savelist=sqlUtil.getAllData();
 
         localist=Assist.getAssist().getAllList(this);
+        initRemoteView();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        if (intent.getAction()!=null&&intent.getAction().equals("com.wang.mymusic.notification")){
+            switch (intent.getIntExtra("oper",0)){
+                case 0:
+                    break;
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+            }
+        }
+
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -235,6 +258,7 @@ public class MusicPlay extends Service {
     public void getSongDate(){
         if(songlist.get(mType)!=null){
             mSongList=songlist.get(mType).get(currentPosition);
+            sendUIDate();
         }
     }
 
@@ -248,6 +272,7 @@ public class MusicPlay extends Service {
                 break;
             case 0:
                 setSongPlay(localist.get(position).getData());
+                initNotification(localist.get(position).getTitle(),localist.get(position).getArtist());
                 break;
             default:
                 getSongDate();
@@ -355,6 +380,52 @@ public class MusicPlay extends Service {
     public interface uiUpdate{
         void updatePlay(Bundle bundle);
         void upProgress(int progress);
+    }
+
+    //创建一个RemoteView实例
+    private void initRemoteView() {
+        //创建一个RemoteView实例
+        mRemoteViews = new RemoteViews(getPackageName(), R.layout.music_play_notification);
+
+        //实例化一个指向MusicService的intent
+        Intent intent = new Intent(this, MusicPlay.class);
+        intent.setAction("com.wang.mymusic.notification");
+
+        //设置play按钮的点击事件
+        intent.putExtra("oper", 0);
+        PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        mRemoteViews.setOnClickPendingIntent(R.id.play, pendingIntent);
+
+        //设置next按钮的点击事件
+        intent.putExtra("oper", 1);
+        pendingIntent = PendingIntent.getService(this, 1, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        mRemoteViews.setOnClickPendingIntent(R.id.next, pendingIntent);
+
+        //设置prev按钮的点击事件
+        intent.putExtra("oper", 2);
+        pendingIntent = PendingIntent.getService(this, 2, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        mRemoteViews.setOnClickPendingIntent(R.id.last, pendingIntent);
+
+        //设置播放模式按钮的点击事件
+        intent.putExtra("oper", 3);
+        pendingIntent = PendingIntent.getService(this, 3, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        mRemoteViews.setOnClickPendingIntent(R.id.moder, pendingIntent);
+
+    }
+    //使用RemoteView实例创建Nitification
+    private void initNotification(String title,String author) {
+
+        //设置RemoteViews的属性值
+        mRemoteViews.setTextViewText(R.id.songtitle,title);
+        mRemoteViews.setTextViewText(R.id.songauthor,author);
+        //实例化一个Builder
+        mBuilder = new NotificationCompat.Builder(this);
+        mBuilder.setSmallIcon(R.drawable.local);
+        //将remoteView设置进去
+        mBuilder.setContent(mRemoteViews);
+        //获取NotificationManager实例
+        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
     }
 
     @Override
