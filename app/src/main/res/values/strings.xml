@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Music</string>
+    <string name="app_name">小熊音乐</string>
     <string name="open_drawer">My Music</string>
     <string name="close_drawer">My Music</string>
     <string name="song_recomment">推荐</string>

@@ -5,21 +5,19 @@
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
         android:padding="@dimen/layout_padding">
         <ImageView
             android:id="@+id/songicon"
             android:adjustViewBounds="true"
             android:scaleType="fitXY"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
             android:src="@drawable/head"
             android:layout_marginRight="10dp"/>
         <TextView
             android:id="@+id/songtitle"
             style="@style/TextAppearance.AppCompat.Notification.Title"
             android:layout_toRightOf="@id/songicon"
-            android:layout_alignTop="@id/songicon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1"
@@ -57,7 +55,7 @@
             android:id="@+id/play"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/pause"
+            android:src="@drawable/playsong"
             android:background="@android:color/transparent"
             style="?android:attr/buttonStyleSmall" />
         <ImageButton
@@ -67,13 +65,6 @@
             android:background="@android:color/transparent"
             style="?android:attr/buttonStyleSmall"
             android:src="@drawable/next" />
-        <ImageButton
-            android:id="@+id/moder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/round"
-            android:background="@android:color/transparent"
-            style="?android:attr/buttonStyleSmall"/>
 
     </LinearLayout>
-    </RelativeLayout>
+</RelativeLayout>

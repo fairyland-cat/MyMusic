@@ -19,6 +19,8 @@ import android.util.Log;
 import android.util.SparseArray;
 import android.widget.RemoteViews;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.NotificationTarget;
 import com.wang.mymusic.R;
 import com.wang.mymusic.data.MusicData;
 import com.wang.mymusic.data.SqlUtil;
@@ -123,7 +125,7 @@ public class MusicPlay extends Service {
                 }else {
                     mSong=song.getSonginfo();
                     String songUri=song.getBitrate().getFile_link();
-                    initNotification(mSong.getTitle(),mSong.getAuthor());
+                    initNotification(mSong.getTitle(),mSong.getAuthor(),mSong.getPic_small(),true);
                     if (songUri.length()!=0){
                     setSongPlay(songUri);
                 }else {NextPlay();}
@@ -144,12 +146,19 @@ public class MusicPlay extends Service {
         if (intent.getAction()!=null&&intent.getAction().equals("com.wang.mymusic.notification")){
             switch (intent.getIntExtra("oper",0)){
                 case 0:
+                    if (mPlay.isPlaying()){
+                        SongPause();
+                        initNotification(null,null,null,false);
+                    }else {
+                        StarPlay(false);
+                        initNotification(null,null,null,true);
+                    }
                     break;
                 case 1:
+                    LastPlay();
                     break;
                 case 2:
-                    break;
-                case 3:
+                    NextPlay();
                     break;
             }
         }
@@ -208,10 +217,10 @@ public class MusicPlay extends Service {
     //发送ui状态数据
     public void sendUIDate(){
         String mtitle=null,mauthor=null,mpic=null;
-        SongData song=savelist.get(currentPosition);
         Bundle bundle=new Bundle();
         switch (mType){
             case 1:
+                SongData song=savelist.get(currentPosition);
                 mtitle=song.getTitle();
                 mauthor=song.getAuthor();
                 mpic=song.getPic_small();
@@ -272,7 +281,7 @@ public class MusicPlay extends Service {
                 break;
             case 0:
                 setSongPlay(localist.get(position).getData());
-                initNotification(localist.get(position).getTitle(),localist.get(position).getArtist());
+                initNotification(localist.get(position).getTitle(),localist.get(position).getArtist(),null,true);
                 break;
             default:
                 getSongDate();
@@ -406,23 +415,31 @@ public class MusicPlay extends Service {
         pendingIntent = PendingIntent.getService(this, 2, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         mRemoteViews.setOnClickPendingIntent(R.id.last, pendingIntent);
 
-        //设置播放模式按钮的点击事件
-        intent.putExtra("oper", 3);
-        pendingIntent = PendingIntent.getService(this, 3, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        mRemoteViews.setOnClickPendingIntent(R.id.moder, pendingIntent);
-
     }
     //使用RemoteView实例创建Nitification
-    private void initNotification(String title,String author) {
+    private void initNotification(@Nullable String title,@Nullable String author,@Nullable String img, Boolean isPlaying) {
 
-        //设置RemoteViews的属性值
-        mRemoteViews.setTextViewText(R.id.songtitle,title);
-        mRemoteViews.setTextViewText(R.id.songauthor,author);
         //实例化一个Builder
         mBuilder = new NotificationCompat.Builder(this);
         mBuilder.setSmallIcon(R.drawable.local);
+        mBuilder.setContentTitle("My notification")
+                .setContentText("Hello World!");
+        mBuilder.setOngoing(true);
         //将remoteView设置进去
         mBuilder.setContent(mRemoteViews);
+        //设置RemoteViews的属性值
+        if (title!=null||author!=null||img!=null){
+            mRemoteViews.setTextViewText(R.id.songtitle,title);
+            mRemoteViews.setTextViewText(R.id.songauthor,author);
+            NotificationTarget mTarget=new NotificationTarget(this,mRemoteViews,R.id.songicon,mBuilder.build(),NOTIFICATION_ID);
+            Glide.with(this).load(img).asBitmap().into(mTarget);
+        }
+        if (isPlaying){
+            mRemoteViews.setImageViewResource(R.id.play,R.drawable.playsong);
+        }else {
+            mRemoteViews.setImageViewResource(R.id.play,R.drawable.pause);
+        }
+
         //获取NotificationManager实例
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());

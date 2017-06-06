@@ -55,14 +55,14 @@ public class LocalFragment extends Fragment {
             public void onRefresh() {
                 off=0;
                 setAdapter();
-                mlistview.refresh();
+                mlistview.refreshComplete();
             }
 
             @Override
             public void onLoadMore() {
                 off+=10;
                 setAdapter();
-                mlistview.refresh();
+                mlistview.refreshComplete();
             }
         });
 
