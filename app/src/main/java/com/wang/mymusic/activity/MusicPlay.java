@@ -424,7 +424,6 @@ public class MusicPlay extends Service {
         mBuilder.setSmallIcon(R.drawable.local);
         mBuilder.setContentTitle("My notification")
                 .setContentText("Hello World!");
-        mBuilder.setOngoing(true);
         //将remoteView设置进去
         mBuilder.setContent(mRemoteViews);
         //设置RemoteViews的属性值
