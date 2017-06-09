@@ -36,5 +36,4 @@ dependencies {
     compile 'jp.wasabeef:glide-transformations:2.0.1'
     compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
     compile 'com.github.zhengken:LyricViewDemo:v1.0'
-    compile 'com.xw.repo:bubbleseekbar:3.4-lite'
 }
