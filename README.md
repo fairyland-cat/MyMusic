@@ -21,7 +21,7 @@
 - 抽屉：DrawerLayout
 - 广播：BroadcastReceiver
 - 服务：service
-- 数据存储：Sqlite，shara
+- 数据存储：Sqlite，SharedPreferences
 ## 实现的功能
 - 侧滑菜单，展示音乐类型，点击可进入相应的歌曲列表页面
 - 歌曲列表展示，点击item进行播放
